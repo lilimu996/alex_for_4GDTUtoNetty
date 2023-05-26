@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.rxkj.util.AlexSatic;
 import com.rxkj.util.AlexUtil;
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,22 +87,39 @@ public class ByteArrayDecoder extends ByteToMessageDecoder{
         in.readBytes(ad, 0, in.readableBytes());
         //心跳：alex01 （616c65783031） , 数据头：alex01-data: （616c657830312d646174613a）
         String hexstr = AlexUtil.bytesToHexString(ad);
-        if (hexstr.length() == 12 && AlexUtil.hexStringToString(hexstr).indexOf(AlexSatic.PROTOCOL_HEAD) >= 0) {
+        log.info("hexstr:"+hexstr);
+        // log.info("alex01hex:"+hexstr.indexOf(""));
+        // log.info("combool="+hexstr.regionMatches(2,"6C65",0,3));
+        /*if (hexstr.length() == 12 && AlexUtil.hexStringToString(hexstr).indexOf(AlexSatic.PROTOCOL_HEAD) >= 0) {
             //是心跳消息
             String heartbeatstr = AlexUtil.hexStringToString(hexstr);
             log.info("接收到心跳信息:" + heartbeatstr);
             out.add(heartbeatstr);
         }else {
             //数据信息
+
             String datahexstr = hexstr.replaceFirst(AlexUtil.stringToHexString(AlexSatic.DATA_HEAD).toUpperCase(),"");
             String datastr = AlexSatic.DATA_HEAD + datahexstr;
             if (datahexstr.length() == 16){
-                log.info("接收到数据" + datastr);
+                log.info("接收到数据:" + datastr);
                 out.add(datastr);
             }else {
-                log.info("接收到数据" + AlexUtil.hexStringToString(hexstr));
+                log.info("接收到数据:" + AlexUtil.hexStringToString(hexstr));
                 out.add(AlexUtil.hexStringToString(hexstr));
             }
+        }*/
+        //心跳:AAAA08NNNN02NNNN  AAAA0823D50200FF
+        //数据:AAAA07NNNN03NN AAAA0724D403FF
+        if (hexstr.length() == 16 &&hexstr.regionMatches(10,"02",0,2)) {
+            //是心跳消息
+            //String heartbeatstr = AlexUtil.hexStringToString(hexstr);
+            log.info("接收到心跳信息:" + hexstr);
+            out.add(hexstr);
+        }else {
+            //数据信息
+            //String datahexstr = hexstr.replaceFirst(AlexUtil.stringToHexString(AlexSatic.DATA_HEAD).toUpperCase(),"");
+                log.info("接收到数据" + hexstr);
+                out.add(hexstr);
         }
 
     }

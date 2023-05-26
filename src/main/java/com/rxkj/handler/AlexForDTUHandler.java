@@ -1,5 +1,6 @@
 package com.rxkj.handler;
 
+import com.rxkj.util.AlexUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
@@ -109,7 +110,7 @@ public class AlexForDTUHandler extends SimpleChannelInboundHandler<FullHttpReque
         ctx.flush();
         /*super.channelReadComplete(ctx);
         ctx.flush(); // 4*/
-        //ctx.writeAndFlush(AlexUtil.hexStringToByteArray("01050000FF008C3A"));
+//        ctx.writeAndFlush(AlexUtil.hexStringToByteArray("01050000FF008C3A"));
     }
 
     /**

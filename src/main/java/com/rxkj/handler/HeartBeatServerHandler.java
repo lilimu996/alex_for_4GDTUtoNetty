@@ -69,5 +69,5 @@ public class HeartBeatServerHandler extends IdleStateHandler {
 
     @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
-        //log.info(READ_IDLE_GAP + "秒内未读到数据!");
+        log.info(READ_IDLE_GAP + "秒内未读到数据!");
     }}
